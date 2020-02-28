@@ -19,7 +19,12 @@ pipeline {
               steps { 
                  aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: '', onDisallowed: 'fail', outputFormat: 'html'
               }
-         }   
+         }  
+         stage('Create EC2 Instance') {
+              steps { 
+                 ansiblePlaybook playbook: 'main.yaml', inventory: 'inventory'
+              }
+         }  
          stage('Upload to AWS') {
               steps {
                  withAWS(region:'us-east-2',credentials:'aws-static') {
